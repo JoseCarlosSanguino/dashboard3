@@ -21,59 +21,8 @@ import {
     Table
 } from 'reactstrap';
 
-const Projects = () => {
-        let history = useHistory();
+const UserDetails = () => {
         
-         const [result,setResult] = useState([]);
-    
-        //const axios = require('axios').default;
-        const instanceLogin = axios.create({
-            baseURL: 'https://gdp-api-eu.telemedcare.com/',
-            timeout: 5000,
-
-        })
-
-        const instanceAPI = axios.create({
-            baseURL: 'https://gdp-api-eu.telemedcare.com/',
-
-        });
-
-        const getData =async()=> {
-            const { data } = await instanceLogin.post('doLogin', {
-                "username": "josecarlos.sanguino",
-                "password": "Sanguino@2021"
-            })
-            localStorage.setItem('token', data.item.userLogged.token);
-            localStorage.setItem('groupId', data.item.userLogged.groupId);
-            localStorage.setItem('userId', data.item.userLogged.id);
-    
-            let axiosConfig = {
-                headers: {
-                    'Content-Type': 'application/json;charset=UTF-8',
-                    token: data.item.userLogged.token
-                }
-            }
-            const resultado = await instanceAPI.get('patients?filter=&init=0&size=10', axiosConfig)
-            
-            setResult(
-                 resultado.data.item.items
-            
-            )
-            
-        }
-        console.log(result);
-        
-        useEffect(() => {
-               getData();
-        }, [])
-
-        const details=(item)=>{
-            console.log(item);
-            //console.log(history);
-           //return  history.push('/userDetails');
-           //return <Redirect to='/userDetails'  />
-           window.location.href = '/'+item;
-        }
 
     return (
         /*--------------------------------------------------------------------------------*/
@@ -111,19 +60,15 @@ const Projects = () => {
                     </thead>
                     <tbody>
                         
-                        {
-                           result.map((item,index)=>{
-                               return (
-                              
-                                    <tr key={index} onClick={()=>details(item.id)} style={{cursor:'pointer'}}>
+                        <tr>
                                 <td>
                                     <div className="d-flex no-block align-items-center">
-                                        <h5 className="mb-0 font-16 font-medium">{item.firstName} {item.lastName}</h5>
+                                        <h5 className="mb-0 font-16 font-medium"></h5>
                                     </div>
                                 </td>
-                                <td className="text-center">{item.serviceNumber}</td>
-                                <td className="text-center">{item.access}</td>
-                                <td className="text-center">{item.group.code}</td>
+                                <td className="text-center"></td>
+                                <td className="text-center"></td>
+                                <td className="text-center"></td>
                                 <td className="text-center">
                                     <button type="button" className="btn btn-primary btn-sm">Details</button>
                                 </td>
@@ -132,10 +77,7 @@ const Projects = () => {
                                 </td>
                             </tr>
                                
-                               )
-                           })
-                        
-                        }
+                          
                     </tbody>
                 </Table>
             </CardBody>
@@ -143,4 +85,4 @@ const Projects = () => {
     );
 }
 
-export default Projects;
+export default UserDetails;
