@@ -50,13 +50,14 @@ const Projects = () => {
                 }
             }
             const resultado = await instanceAPI.get('patients?filter=&init=0&size=10', axiosConfig)
-            console.log(resultado);
+            
             setResult(
                  resultado.data.item.items
+            
             )
-            console.log(result);
+            
         }
-
+        console.log(result);
         useEffect(() => {
                getData();
         }, [])
@@ -87,34 +88,39 @@ const Projects = () => {
                 <Table className="no-wrap v-middle" responsive>
                     <thead>
                         <tr className="border-0">
-                            <th className="border-0">Team Lead</th>
-                            <th className="border-0">Project</th>
-
-                            <th className="border-0">Status</th>
-                            <th className="border-0">Weeks</th>
-                            <th className="border-0">Budget</th>
+                        <th className="text-center">Complete name</th>
+                        <th className="text-center">Phone</th>
+                        <th className="text-center">Access</th>
+                        <th className="text-center">Group</th>
+                        <th className="text-center">Actions</th>
+                        <th className="text-center">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         
-                        <tr>
-                            <td>
-                                <div className="d-flex no-block align-items-center">
-                                    <div className="mr-2"><img src={img1} alt="user" className="rounded-circle" width="45" /></div>
-                                    <div className="">
-                                        <h5 className="mb-0 font-16 font-medium">Hanna Gover</h5><span>hgover@gmail.com</span></div>
-                                </div>
-                            </td>
-                            <td>Elite Admin</td>
-
-                            <td>
-                                <i className="fa fa-circle text-warning" id="tlp1"></i>
-
-                            </td>
-                            <td>35</td>
-                            <td className="blue-grey-text  text-darken-4 font-medium">$96K</td>
-                        </tr>
+                        {
+                           result.map((item,index)=>{
+                               return (
+                                <tr key={index}>
+                                <td>
+                                    <div className="d-flex no-block align-items-center">
+                                        <h5 className="mb-0 font-16 font-medium">{item.firstName} {item.lastName}</h5>
+                                    </div>
+                                </td>
+                                <td className="text-center">{item.serviceNumber}</td>
+                                <td className="text-center">{item.access}</td>
+                                <td className="text-center">{item.group.code}</td>
+                                <td className="text-center">
+                                    <button type="button" className="btn btn-primary btn-sm">Details</button>
+                                </td>
+                                <td className="text-center" >
+                                    <button type="button" className="btn btn-danger btn-sm">Delete</button>
+                                </td>
+                            </tr>
+                               )
+                           })
                         
+                        }
                     </tbody>
                 </Table>
             </CardBody>
