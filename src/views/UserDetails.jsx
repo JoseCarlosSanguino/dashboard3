@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import SimpleDateTime  from 'react-simple-timestamp-to-date';
 
 import img1 from 'assets/images/users/1.jpg';
 import img2 from 'assets/images/users/2.jpg';
@@ -13,7 +14,23 @@ import {
     CardTitle,
     CardSubtitle,
     Input,
-    Table
+    Table,
+   
+    CardImg,
+    CardImgOverlay,
+    CardText,
+   
+   
+    
+    CardColumns,
+    CardGroup,
+    CardDeck,
+    CardLink,
+    CardHeader,
+    CardFooter,
+    Button,
+    Row,
+    Col
 } from 'reactstrap';
 
 const UserDetails = () => {
@@ -40,67 +57,41 @@ const UserDetails = () => {
     useEffect(() => {
         getDataUserId();
     }, [])
+    let currentTimestamp ;
+       console.log(data);
     return (
-        /*--------------------------------------------------------------------------------*/
-        /* Used In Dashboard-4 [General]                                                  */
-        /*--------------------------------------------------------------------------------*/
+        
+        <div>
+             {
+            data.map((item, index) => {
+             return (
+                <div key={index}>
+                  <Row>
+                    <Col sm="12">
+                      <Card>
+                      
+                       
+                        <CardHeader>{new Intl.DateTimeFormat('en-US', { year: 'numeric', month: '2-digit', day: '2-digit', }).format(item.timestamp)}</CardHeader>
+                          <CardBody>
+                              <CardTitle>{item.peripheralMeasureDesc}</CardTitle>
+                              <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
+                              <Button>Go somewhere</Button>
+                          </CardBody>
+                          
 
-        <Card>
-            <CardBody>
-                <div className="d-flex align-items-center">
-                    <div>
-                        <CardTitle>Projects of the Month</CardTitle>
-                        <CardSubtitle>Overview of Latest Month</CardSubtitle>
-                    </div>
-                    <div className="ml-auto d-flex no-block align-items-center">
-                        <div className="dl">
-                            <Input type="select" className="custom-select">
-                                <option value="0">Monthly</option>
-                                <option value="1">Daily</option>
-                                <option value="2">Weekly</option>
-                                <option value="3">Yearly</option>
-                            </Input>
-                        </div>
-                    </div>
-                </div>
-                <Table className="no-wrap v-middle" responsive>
-                    <thead>
-                        <tr className="border-0">
-                            <th className="text-center">Description</th>
-                            <th className="text-center">Code</th>
-                            <th className="text-center">Id</th>
-                            <th className="text-center">Suscribe</th>
-                            <th className="text-center">Actions</th>
-                            <th className="text-center">Delete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            data.map((item, index) => {
-                                return (
-                                    <tr key={index} style={{ cursor: 'pointer' }}>
-                                        <td>
-                                            <div className="d-flex no-block align-items-center">
-                                                <h5 className="mb-0 font-16 font-medium">{item.peripheralMeasureDesc}</h5>
-                                            </div>
-                                        </td>
-                                        <td className="text-center">{item.items[0].type.code}</td>
-                                        <td className="text-center">{item.id}</td>
-                                        <td className="text-center">{item.peripheral.subscribe ? 'yes' : 'No'}</td>
-                                        <td className="text-center">
-                                            <button type="button" className="btn btn-primary btn-sm">Details</button>
-                                        </td>
-                                        <td className="text-center" >
-                                            <button type="button" className="btn btn-danger btn-sm">Delete</button>
-                                        </td>
-                                    </tr>
+                      </Card>
+                      
+                    </Col>
+                
+                    </Row>
+                </div>   
+                                   
                                 )
-                            })
-                        }
-                    </tbody>
-                </Table>
-            </CardBody>
-        </Card>
+            })
+          }
+
+        </div>
+       
     );
 }
 
