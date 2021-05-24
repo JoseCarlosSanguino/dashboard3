@@ -1,16 +1,11 @@
-import React,{useEffect,useState} from "react";
-
+import React, { useEffect, useState } from "react";
 import axios from 'axios';
-
-import { useHistory } from "react-router";
-import  { Redirect } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import img1 from 'assets/images/users/1.jpg';
 import img2 from 'assets/images/users/2.jpg';
 import img3 from 'assets/images/users/3.jpg';
 import img4 from 'assets/images/users/4.jpg';
-
-
 
 import {
     Card,
@@ -22,8 +17,29 @@ import {
 } from 'reactstrap';
 
 const UserDetails = () => {
-        
+    let { id } = useParams()
+    const [data, setData] = useState([])
+    // const instanceLogin = axios.create({
+    //     baseURL: 'https://gdp-api-eu.telemedcare.com/',
+    //     timeout: 5000,
+    // })
+    const instanceAPI = axios.create({
+        baseURL: 'https://gdp-api-eu.telemedcare.com/',
+    });
 
+    const getDataUserId = async () => {
+        let axiosConfig = {
+            headers: {
+                'Content-Type': 'application/json;charset=UTF-8',
+                token: localStorage.getItem('token')
+            }
+        }
+        const { data: { item: { items } } } = await instanceAPI.get(`patients/${id}/measures?init=0&size=30`, axiosConfig)
+        setData(items)
+    }
+    useEffect(() => {
+        getDataUserId();
+    }, [])
     return (
         /*--------------------------------------------------------------------------------*/
         /* Used In Dashboard-4 [General]                                                  */
@@ -50,34 +66,37 @@ const UserDetails = () => {
                 <Table className="no-wrap v-middle" responsive>
                     <thead>
                         <tr className="border-0">
-                        <th className="text-center">Complete name</th>
-                        <th className="text-center">Phone</th>
-                        <th className="text-center">Access</th>
-                        <th className="text-center">Group</th>
-                        <th className="text-center">Actions</th>
-                        <th className="text-center">Delete</th>
+                            <th className="text-center">Description</th>
+                            <th className="text-center">Code</th>
+                            <th className="text-center">Id</th>
+                            <th className="text-center">Suscribe</th>
+                            <th className="text-center">Actions</th>
+                            <th className="text-center">Delete</th>
                         </tr>
                     </thead>
                     <tbody>
-                        
-                        <tr>
-                                <td>
-                                    <div className="d-flex no-block align-items-center">
-                                        <h5 className="mb-0 font-16 font-medium"></h5>
-                                    </div>
-                                </td>
-                                <td className="text-center"></td>
-                                <td className="text-center"></td>
-                                <td className="text-center"></td>
-                                <td className="text-center">
-                                    <button type="button" className="btn btn-primary btn-sm">Details</button>
-                                </td>
-                                <td className="text-center" >
-                                    <button type="button" className="btn btn-danger btn-sm">Delete</button>
-                                </td>
-                            </tr>
-                               
-                          
+                        {
+                            data.map((item, index) => {
+                                return (
+                                    <tr key={index} style={{ cursor: 'pointer' }}>
+                                        <td>
+                                            <div className="d-flex no-block align-items-center">
+                                                <h5 className="mb-0 font-16 font-medium">{item.peripheralMeasureDesc}</h5>
+                                            </div>
+                                        </td>
+                                        <td className="text-center">{item.items[0].type.code}</td>
+                                        <td className="text-center">{item.id}</td>
+                                        <td className="text-center">{item.peripheral.subscribe ? 'yes' : 'No'}</td>
+                                        <td className="text-center">
+                                            <button type="button" className="btn btn-primary btn-sm">Details</button>
+                                        </td>
+                                        <td className="text-center" >
+                                            <button type="button" className="btn btn-danger btn-sm">Delete</button>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
                     </tbody>
                 </Table>
             </CardBody>

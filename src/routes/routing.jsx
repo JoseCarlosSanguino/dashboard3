@@ -69,14 +69,12 @@ var ThemeRoutes = [
   {
     path: '/ui-components/tooltip',
     name: 'Toltips',
-
     icon: 'mdi mdi-image-filter-vintage',
     component: TooltipComponent
   },
   {
-    path: '/:id',
-   
-
+    name: 'details',
+    path: '/user/:id',
     icon: 'mdi mdi-image-filter-vintage',
     component: UserDetails
   },
